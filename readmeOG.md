@@ -1,3 +1,5 @@
+This orignal file was written by rebaker501
+
 ﻿# CAPEv2 Sandbox Installation Part 1 - Up and Running with the Basics
 
 So, I spent so much time using the official docs for CAPEv2. The Github readme and the install docs conflict a bit. There were also some very key issues called out in the Github issues section. Those are incorporated here. I installed and reinstalled over 40 times. Doomedraven has done a wonderful job of getting this code optimized and continuing on the Cuckoo project. Hopefully this documentation will save some time so that you can start utilizing this terrific project. Also, feel free to copy this documentation. It's for the community.

@@ -1,6 +1,6 @@
 Part 1 written by rebaker501
 
-_Note: I did not use physical hardware for my CAPE setup. I used an Azure VM running Ubuntu._
+_Note: I (JTurn01) did not use physical hardware for my CAPE setup. I used an Azure VM running Ubuntu._
 
 # Capev2 Sandbox Installation Part 1 - Up and Running with the Basics
 

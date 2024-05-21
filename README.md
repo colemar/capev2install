@@ -2,7 +2,7 @@ Part 1 written by rebaker501
 
 _Note: I did not use physical hardware for my CAPE setup. I used an Azure VM running Ubuntu._
 
-﻿# CAPEv2 Sandbox Installation Part 1 - Up and Running with the Basics
+# Capev2 Sandbox Installation Part 1 - Up and Running with the Basics
 
 So, I spent so much time using the official docs for CAPEv2. The Github readme and the install docs conflict a bit. There were also some very key issues called out in the Github issues section. Those are incorporated here. I installed and reinstalled over 40 times. Doomedraven has done a wonderful job of getting this code optimized and continuing on the Cuckoo project. Hopefully this documentation will save some time so that you can start utilizing this terrific project. Also, feel free to copy this documentation. It's for the community.
 
@@ -200,4 +200,15 @@ We will need a virtual machine build for analyzing malware samples. A Windows 10
 
 
 
-## WORK IN PROGRESS....
+# Capev2 Sandbox Installation Part 2 - Up and Running with the Basics
+
+At this point you should have a server running Ubuntu 22.04 with CAPE and KVM installed on it. Within KVM you should have a VM (or VMs) with a snapshot taken after configuring the machine; this is the CAPE agent.
+
+## Editing configs 
+
+In this section we are going to change the CAPE configs on the server so that, when CAPE runs, it can find the VM which you created. Make sure you write down the IPs for the server and CAPE agent.
+
+In a terminal:
+1. `cd /opt/CAPEv2/conf/`
+2. `sudo nano kvm.conf`
+3. 

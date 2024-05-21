@@ -247,7 +247,7 @@ If you run into any errors with running CAPE, see the "CAPE Errors" section belo
 
 ## CAPE Errors
 
-I encountered quite a few errors when trying to run CAPE. If these apply to you, hopefully they help you solve your issue. If not, try going to the file where the error is originating from and editing the code.  
+I encountered quite a few errors when trying to run CAPE. If these apply to you, hopefully they help you solve your issue. If not, try looking online or going to the file where the error is originating from and editing the code.  
 
 Be warned, there is not a lot of online documentation/support for CAPE errors, so god speed.
   

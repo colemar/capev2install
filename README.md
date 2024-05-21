@@ -200,7 +200,7 @@ We will need a virtual machine build for analyzing malware samples. A Windows 10
 
 
 
-# Capev2 Sandbox Installation Part 2 - Up and Running with the Basics
+# Capev2 Sandbox Installation Part 2 - Configuring and Running CAPE
 
 At this point you should have a server running Ubuntu 22.04 with CAPE and KVM installed on it. Within KVM you should have a VM (or VMs) with a snapshot taken after configuring the machine; this is the CAPE agent.
 
@@ -211,7 +211,7 @@ In this section we are going to change the CAPE configs on the server so that, w
 In a terminal:
 1. `cd /opt/CAPEv2/conf/`
 2. `sudo nano kvm.conf`
-3. Change the follwing settings
+3. Find and change the matching config settings 
    - machines = _your_vm_name_
    - interface = virbr0
    - label = _your_vm_name_
@@ -219,4 +219,45 @@ In a terminal:
    - ip = _ip_of_vm_
    - label = _your_vm_name_
    - ip = _ip_of_vm_
+4. `sudo nano cuckoo.conf`
+5. Find and change the matching config settings
+   - _(Optional)_ machinery_screenshots = on _This allows cape to take pictures during analysis_
+   - _Under [resultserver]_ ip = _ip_of_local_server_
+   - port = _port_of_local_server_
+
+## Running CAPE
+
+Now you should be ready to run cape from your server. Running cape must be done with the cape user, which was created when you ran the cape2.sh script, so please be sure to use the commands as written.  
+
+If you run into any errors with running CAPE, see the "CAPE Errors" section below.  
+
+1. `cd /opt/CAPEv2/`
+2. `sudo -u cape poetry run python3 cuckoo.py`
+3. If cape is running correctly, you will get an output similar to this:
+> Cuckoo Sandbox 2.1-CAPE
+> www.cuckoosandbox.org
+> Copyright (c) 2010-2015
+>
+> CAPE: Config and Payload Extraction
+> github.com/kevoreilly/CAPEv2
+>
+> 2020-07-06 10:24:38,490 [lib.cuckoo.core.scheduler] INFO: Using "kvm" machine manager with max_analysis_count=0, max_machines_count=10, and max_vmstartup_count=10
+> 2020-07-06 10:24:38,552 [lib.cuckoo.core.scheduler] INFO: Loaded 100 machine/s
+> 2020-07-06 10:24:38,571 [lib.cuckoo.core.scheduler] INFO: Waiting for analysis tasks.
+
+## CAPE Errors
+
+I encountered quite a few errors when trying to run CAPE. If these apply to you, hopefully they help you solve your issue. If not, try going to the file where the error is originating from and editing the code.  
+
+Be warned, there is not a lot of online documentation/support for CAPE errors, so god speed.
+
+### 2024-05-17 18:53:22,589 [root] CRITICAL: CuckooCriticalError: No machines available
+This error occurs when you set up your config files wrong. Go back and make sure everything is correct within those files.
+
+### AttributeError: module 'lib' has no attribute 'X509_V_FLAG_NOTIFY_POLICY'. Did you mean: 'X509_V_FLAG_EXPLICIT_POLICY'?
+Run `pip install --upgrade pyopenssl cryptography cffi`
+
+### OSError: /home/_username_/.cache/pypoetry/virtualenvs/capev2-t2x27zRb-py3.10/lib/libyara.so: cannot open shared object file: No such file or directory
+I had to create a soft-link to where the 
+
    

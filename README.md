@@ -290,3 +290,4 @@ I never really fixed this error, because when I reverted my server to a previous
 
 I wouldn't try messing with this by editing it. I believe something must be seriously wrong with your setup for it to throw this error. Try uninstalling and reinstalling CAPE.
 
+## WORK IN PROGRESS

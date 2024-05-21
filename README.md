@@ -250,14 +250,43 @@ If you run into any errors with running CAPE, see the "CAPE Errors" section belo
 I encountered quite a few errors when trying to run CAPE. If these apply to you, hopefully they help you solve your issue. If not, try going to the file where the error is originating from and editing the code.  
 
 Be warned, there is not a lot of online documentation/support for CAPE errors, so god speed.
-
-### 2024-05-17 18:53:22,589 [root] CRITICAL: CuckooCriticalError: No machines available
+  
+### _2024-05-17 18:53:22,589 [root] CRITICAL: CuckooCriticalError: No machines available_
 This error occurs when you set up your config files wrong. Go back and make sure everything is correct within those files.
-
-### AttributeError: module 'lib' has no attribute 'X509_V_FLAG_NOTIFY_POLICY'. Did you mean: 'X509_V_FLAG_EXPLICIT_POLICY'?
+  
+  
+### _AttributeError: 'KVM' object has no attribute 'vms'_ 
+This error occurs when you set up your config files wrong. Go back and make sure everything is correct within those files.
+  
+  
+### _libvirt.libvirtError: Domain not found: no domain with matching name 'cuckoo1'_
+This error occurs when you set up your config files wrong. Go back and make sure everything is correct within those files.
+  
+  
+### _AttributeError: module 'lib' has no attribute 'X509_V_FLAG_NOTIFY_POLICY'. Did you mean: 'X509_V_FLAG_EXPLICIT_POLICY'?_
 Run `pip install --upgrade pyopenssl cryptography cffi`
+  
+  
+### _OSError: /home/_username_/.cache/pypoetry/virtualenvs/capev2-t2x27zRb-py3.10/lib/libyara.so: cannot open shared object file: No such file or directory_
+I had to create a soft-link to where the file is actually in the system. 
+1. Find libyara.so within your file system, the path should be `/usr/local/lib/libyara.so`
+2. Copy the filepath
+3. Open a terminal and run, make sure to replace username with your own `ln -s /usr/local/lib/libyara.so /home/_username_/.cache/pypoetry/virtualenvs/capev2-t2x27zRb-py3.10/lib/libyara.so`
+  
+  
+### _AttributeError: module 'sflock.__version__' has no attribute 'split'_
+Error cause by code that checks the version of sflock and whether or not it is up to date. I deleted the code for checking the version and everything worked fine after that. 
+`sudo nano /opt/CAPEv2/utils/../lib/cuckoo/common/demux.py` go to line 32 and delete the 2(?) lines of code
+  
+  
+### _YaraSyntaxError: /home/cybersecurity/.cache/pypoetry/virtualenvs/capev2-t2x27zRb-py3.10/lib/python3.10/site-packages/sflock/data/yara/shellcodes.yar:47: misplaced wildcard or skip at string "$peb_parsing", wildcards and skips are only allowed after the first byte of the string_
 
-### OSError: /home/_username_/.cache/pypoetry/virtualenvs/capev2-t2x27zRb-py3.10/lib/libyara.so: cannot open shared object file: No such file or directory
-I had to create a soft-link to where the 
+I encountered this error but I think it was because I had misconfigured something during installation. Still, I wanted to include it here because it was a pain for me to figure out.  
+I never really fixed this error, because when I reverted my server to a previous snapshot, it seemed to resolve itself. Now that my setup works, here is the code that works:  
 
-   
+`$peb_parsing = { (64 a1 30 00 00 00 | 64 8b (1d | 0d | 15 | 35 | 3d) 30 00 00 00 | 31 (c0 | db | c9 | d2 | f6 | ff) [0-8] 64 8b ?? 30 ) [0-8] 8b ?? 0c [0-8] 8b ?? (0c | 14 | 1C) [0-8] 8b ?? (28 | 30) }`
+
+`$peb_parsing64 = { (48 65 A1 60 00 00 00 00 00 00 00 | 65 (48 | 4C) 8B ?? 60 00 00 00 | 65 A1 60 00 00 00 00 00 00 00 | 65 8b ?? ?? 00 FF FF | (48 31 (c0 | db | c9 | d2 | f6 | ff) | 4D 31 (c0 | c9))  [0-16] 65 (48 | 4d | 49 | 4c) 8b ?? 60) [0-16] (48 | 49 | 4C) 8B ?? 18 [0-16] (48 | 49 | 4C) 8B ?? (10 | 20 | 30) [0-16] (48 | 49 | 4C) 8B ?? (50 | 60) }`
+
+I wouldn't try messing with this by editing it. I believe something must be seriously wrong with your setup for it to throw this error. Try uninstalling and reinstalling CAPE.
+

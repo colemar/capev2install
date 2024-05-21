@@ -147,38 +147,38 @@ We will need a virtual machine build for analyzing malware samples. A Windows 10
  21. Security tab - Lot's to do here.
      Uncheck enable protected mode. Click Custom Level.
      In the list, change the following:
-     -Loose XAML - Enable XAML Browser Applications
-     -Run components not signed with Authenticode - Enable
-     -Run components signed with Authenticode - Enable
-     -Allow ActiveX Filtering - Disable
-     -Allow previously unused ActiveX controls to run without prompting - Enable
-     -Allow scriptlets - Enable
-     -Display video and animation on a webpage - Enable
-     -Download signed ActiveX controls - Enable
-     -Download unsigned ActiveX controls - Enable
-     -Initialize and script ActiveX controls not marked as safe - Enable
-     -Only allow approved domains to use ActiveX - Disable
-     -Run ActiveX controls and plug-ins - Enable
-     -Antimalware software - Disable
-     -Script ActiveX controls marked as safe for scripting - Enable
-     -Access data sources across domains - Enable
-     -Allow dragging ... 2 entries - Enable
-     -Allow scripting of Microsoft web browser control and script initiated windows - Enable
-     -Allow the TDC control - Enable
-     -Allow webpages to use restricted protocols - Enable
-     -Allow website to open windows without address - Enable
-     -Display mixed content - Enable
-     -Don't prompt for client cert - Enable
-     -Launching applications and unsafe files - Enable
-     -Launching programs and files in IFRAME - Enable
-     -Navigate windows and frames across different domains - Enable
-     -Render legacy filters - Enable
-     -Use pop-up blocker - Disable
-     -Use Windows Defender SmartScreen - Disable
-     -Userdata persistence - Disable
-     -Allow programmatic clipboard access - Disable
-     -Allow status bar updates via script- Enable
-     -Logon = Anonymous logon
+     - Loose XAML - Enable XAML Browser Applications
+     - Run components not signed with Authenticode - Enable
+     - Run components signed with Authenticode - Enable
+     - Allow ActiveX Filtering - Disable
+     - Allow previously unused ActiveX controls to run without prompting - Enable
+     - Allow scriptlets - Enable
+     - Display video and animation on a webpage - Enable
+     - Download signed ActiveX controls - Enable
+     - Download unsigned ActiveX controls - Enable
+     - Initialize and script ActiveX controls not marked as safe - Enable
+     - Only allow approved domains to use ActiveX - Disable
+     - Run ActiveX controls and plug-ins - Enable
+     - Antimalware software - Disable
+     - Script ActiveX controls marked as safe for scripting - Enable
+     - Access data sources across domains - Enable
+     - Allow dragging ... 2 entries - Enable
+     - Allow scripting of Microsoft web browser control and script initiated windows - Enable
+     - Allow the TDC control - Enable
+     - Allow webpages to use restricted protocols - Enable
+     - Allow website to open windows without address - Enable
+     - Display mixed content - Enable
+     - Don't prompt for client cert - Enable
+     - Launching applications and unsafe files - Enable
+     - Launching programs and files in IFRAME - Enable
+     - Navigate windows and frames across different domains - Enable
+     - Render legacy filters - Enable
+     - Use pop-up blocker - Disable
+     - Use Windows Defender SmartScreen - Disable
+     - Userdata persistence - Disable
+     - Allow programmatic clipboard access - Disable
+     - Allow status bar updates via script- Enable
+     - Logon = Anonymous logon
  23. When you try to save these settings you'll get a warning they are not secure. Just accept that and move on.
  24. Privacy tab of Internet Options: Uncheck Turn on pop-up blocker and disable toolbars. Advanced Security Section: Allow active content - check all of those. Uncheck Check For... boxes. Make it permissive. Use your judgement here as things change. 
  25. Install Python 32bit for Windows. Customize the installation. Check the box to add Python to PATH. Make sure everything else is checked including install for all users. Install it all. At the end of the install there is an option to disable PATH length limit. Click that. Y
@@ -211,4 +211,12 @@ In this section we are going to change the CAPE configs on the server so that, w
 In a terminal:
 1. `cd /opt/CAPEv2/conf/`
 2. `sudo nano kvm.conf`
-3. 
+3. Change the follwing settings
+   - machines = _your_vm_name_
+   - interface = virbr0
+   - label = _your_vm_name_
+   - platform = _os_on_vm_
+   - ip = _ip_of_vm_
+   - label = _your_vm_name_
+   - ip = _ip_of_vm_
+   

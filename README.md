@@ -276,7 +276,7 @@ I had to create a soft-link to where the file is actually in the system.
   
 ### _AttributeError: module 'sflock.__version__' has no attribute 'split'_
 Error cause by code that checks the version of sflock and whether or not it is up to date. I deleted the code for checking the version and everything worked fine after that. 
-`sudo nano /opt/CAPEv2/utils/../lib/cuckoo/common/demux.py` go to line 32 and delete the 2(?) lines of code
+`sudo nano ./lib/cuckoo/common/demux.py` go to line 32 and delete the 2(?) lines of code
   
   
 ### _YaraSyntaxError: /home/cybersecurity/.cache/pypoetry/virtualenvs/capev2-t2x27zRb-py3.10/lib/python3.10/site-packages/sflock/data/yara/shellcodes.yar:47: misplaced wildcard or skip at string "$peb_parsing", wildcards and skips are only allowed after the first byte of the string_

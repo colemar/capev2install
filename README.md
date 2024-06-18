@@ -59,7 +59,7 @@ This is where the instructions incorporate my experience. Would like to give a s
  2. Once step 1 completes, let's get our KVM installer downloaded.
  3. From a terminal:
 
-    `wget https://raw.githubusercontent.com/doomedraven/Tools/master/Virtualization/kvm-qemu.sh`
+    `wget https://raw.githubusercontent.com/kevoreilly/CAPEv2/master/installer/kvm-qemu.sh`
 
  4. This file will need to be edited with some hardware information. I think this is right, but if it's not, please feel free to put in an issue and give us the assist. Documentation was not good regarding this, so hours upon hours where spent. Here's how I got the data I believe is correct to replace WOOT within the kvm-qemu script. Run the following commands. I recommend doing this from a temp folder you can create in your home directory. Once again, this is my estimation of what to do as the instructions literally say to Google it.
  5. `sudo acpidump > acpidump.out`
@@ -67,38 +67,41 @@ This is where the instructions incorporate my experience. Would like to give a s
  7. `sudo iasl -d dsdt.dat`  (NOTE: my steps are case sensitive)
  8.  The output of that last command produced a line that contained a 4 digit code. ACPI: DSDT 0x0000000000000000 0213AC (v02 HPQOEM **82BF**     00000000 INTL 20121018). I used 82BF to replace all of the `<WOOT>` instances in the kvm-qemu.sh file.
  9. Set the installer to executable `sudo chmod +x kvm-qemu.sh`
- 10. Execute the installer for KVM from the terminal `sudo ./kvm-qemu.sh all cape | tee kvm-qemu.log`
- 11. Install virtmanager GUI `sudo ./kvm-qemu.sh virtmanager cape | tee kvm-qemu-virtmanager.log` 
- 12. `sudo reboot`
+ 10. Execute the installer for KVM from the terminal, replace <username> with current active user `sudo ./kvm-qemu.sh all <username> | tee kvm-qemu.log`
+ 11. `sudo reboot`
+ 12. Install virtmanager GUI, replace <username> with current active user `sudo ./kvm-qemu.sh virtmanager <username> | tee kvm-qemu-virtmanager.log` 
+ 13. `sudo reboot`
 
 ## Install CAPEv2 Sandbox
 
 In this section we install CAPEv2. The installer will need to be edited a little. Additionally, I had some problems with tor, so I disabled that in the config. Obviously, you'd probably want this functionality. Let's get it running and then we can enable extra features one at a time so troubleshooting is easier if there are any problems.
 
  1. Open the Terminal and let's get going. Go to your home directory `cd ~`
- 2. `git clone https://github.com/kevoreilly/CAPEv2.git`
- 3.  `cd CAPEv2/installer`
- 4.  Edit cape2.sh with your favorite editor 
- 5.  Here are some of the parameters. Verify these.
+ 2. `wget https://raw.githubusercontent.com/kevoreilly/CAPEv2/master/installer/cape2.sh`
+ 3.  Edit cape2.sh with your favorite editor 
+ 4.  Here are some of the parameters. Verify these.
 
 > NETWORK_IFACE=virbr0 
 > IFACE_IP="192.168.122.1"
-> PASSWD="typeyourpasswordhere"
+> PASSWD="<pswd>" Replace <pswd> with your own password
 > USER=cape
 
- 6. `sudo chmod +x cape2.sh`
- 7. `sudo ./cape2.sh base | tee cape.log`
- 8. `sudo reboot`
- 9. Once rebooted, there is one more hurdle. This one took me a while to figure out. It was buried in the issues section of the Github repository. The database doesn't have proper permissions by default, so this will correct that.
- 10. From the Terminal `sudo -u postgres psql`
- 11. `ALTER DATABASE cape OWNER TO cape;`
- 12. `\q` 
- 13. `cd /opt/CAPEv2`
- 14.  Run `sudo journalctl -u cape.service`. This will show the log for the CAPE service. My first try showed that some dependencies were missing. Yours may vary, but this is what I had to do next.
- 15. `poetry run pip3 install https://github.com/CAPESandbox/peepdf/archive/20eda78d7d77fc5b3b652ffc2d8a5b0af796e3dd.zip#egg=peepdf==0.4.2`
- 16. `poetry run pip3 install -U git+https://github.com/DissectMalware/batch_deobfuscator`
- 17. `poetry run pip3 install -U git+https://github.com/CAPESandbox/httpreplay`
- 18. Work through that until you get no errors from journalctl. You might have to restart the service. The other cape services can be found by typing journalctl -u cape and hitting tab a couple of times. This will list out the other services. You'll need to look at these to figure out if anything is wrong. In your routing.conf you'll need the tor line to reflect what interface KVM is attached to, in my case virbr0.
+ 5. `sudo chmod a+x cape2.sh`
+ 6. `sudo ./cape2.sh all | tee cape.log`
+ 7. `sudo reboot`
+ 8. Once rebooted, there is one more hurdle. This one took me a while to figure out. It was buried in the issues section of the Github repository. The database doesn't have proper permissions by default, so this will correct that.
+ 9. From the Terminal `sudo -u postgres psql`
+ 10. `ALTER DATABASE cape OWNER TO cape;`
+ 11. `\q` 
+ 12. `cd /opt/CAPEv2`
+ 13. `pip3 install -r requirements.txt`
+ 14. `poetry install`
+ 15. `sudo -u cape poetry run pip install -r extra/optional_dependencies.txt`
+ 16.  Run `sudo journalctl -u cape.service`. This will show the log for the CAPE service. My first try showed that some dependencies were missing. Yours may vary, but this is what I had to do next.
+ 17. `poetry run pip3 install https://github.com/CAPESandbox/peepdf/archive/20eda78d7d77fc5b3b652ffc2d8a5b0af796e3dd.zip#egg=peepdf==0.4.2`
+ 18. `poetry run pip3 install -U git+https://github.com/DissectMalware/batch_deobfuscator`
+ 19. `poetry run pip3 install -U git+https://github.com/CAPESandbox/httpreplay`
+ 20. Work through that until you get no errors from journalctl. You might have to restart the service. The other cape services can be found by typing journalctl -u cape and hitting tab a couple of times. This will list out the other services. You'll need to look at these to figure out if anything is wrong. In your routing.conf you'll need the tor line to reflect what interface KVM is attached to, in my case virbr0.
 ## Build an Analysis VM
 
 We will need a virtual machine build for analyzing malware samples. A Windows 10 VM will work. You can use Windows 7, Windows 10, Windows 11, Windows Server, Linux, etc. Let's start with one. Disabling the services on Windows 10 is a bit of a pain, but I've found some good scripts to automate the process. You'll need a Windows 10 license and I strongly suggest a copy of MS Office (2019 or 2016 is just fine). The new version (365) might be too chatty on the network. Some people suggest 4GB of RAM for the VMs but I use 8GB. Also, never use less than 2 cores or CPUs. No devices in the past 10 years are single core and malware might look for that. Let's start.
@@ -203,14 +206,14 @@ We will need a virtual machine build for analyzing malware samples. A Windows 10
 # Capev2 Sandbox Installation Part 2 - Configuring and Running CAPE
 
 At this point you should have a server running Ubuntu 22.04 with CAPE and KVM installed on it. Within KVM you should have a VM (or VMs) with a snapshot taken after configuring the machine; this is the CAPE agent.
-
+**ALL OF THESE STEPS NEED TO BE DONE USING THE CAPE USER! Open a terminal and use command `sudo su - cape -c /bin/bash` to run commands as CAPE user**
 ## Editing configs 
 
 In this section we are going to change the CAPE configs on the server so that, when CAPE runs, it can find the VM which you created. Make sure you write down the IPs for the server and CAPE agent.
 
-In a terminal:
+In a terminal (as CAPE user):
 1. `cd /opt/CAPEv2/conf/`
-2. `sudo nano kvm.conf`
+2. `nano kvm.conf`
 3. Find and change the matching config settings 
    - machines = _your_vm_name_
    - interface = virbr0
@@ -219,7 +222,7 @@ In a terminal:
    - ip = _ip_of_vm_
    - label = _your_vm_name_
    - ip = _ip_of_vm_
-4. `sudo nano cuckoo.conf`
+4. `nano cuckoo.conf`
 5. Find and change the matching config settings
    - _(Optional)_ machinery_screenshots = on _This allows cape to take pictures during analysis_
    - _Under [resultserver]_ ip = _ip_of_local_server_
@@ -232,7 +235,7 @@ Now you should be ready to run cape from your server. Running cape must be done 
 If you run into any errors with running CAPE, see the "CAPE Errors" section below.  
 
 1. `cd /opt/CAPEv2/`
-2. `sudo -u cape poetry run python3 cuckoo.py`
+2. `poetry run python3 cuckoo.py`
 3. If cape is running correctly, you will get an output similar to this:
 > Cuckoo Sandbox 2.1-CAPE
 > www.cuckoosandbox.org
@@ -246,10 +249,6 @@ If you run into any errors with running CAPE, see the "CAPE Errors" section belo
 > 2020-07-06 10:24:38,571 [lib.cuckoo.core.scheduler] INFO: Waiting for analysis tasks.
 
 ## CAPE Errors
-
-I encountered quite a few errors when trying to run CAPE. If these apply to you, hopefully they help you solve your issue. If not, try looking online or going to the file where the error is originating from and editing the code.  
-
-Be warned, there is not a lot of online documentation/support for CAPE errors, so god speed.
   
 ### _2024-05-17 18:53:22,589 [root] CRITICAL: CuckooCriticalError: No machines available_
 This error occurs when you set up your config files wrong. Go back and make sure everything is correct within those files.
@@ -262,32 +261,4 @@ This error occurs when you set up your config files wrong. Go back and make sure
 ### _libvirt.libvirtError: Domain not found: no domain with matching name 'cuckoo1'_
 This error occurs when you set up your config files wrong. Go back and make sure everything is correct within those files.
   
-  
-### _AttributeError: module 'lib' has no attribute 'X509_V_FLAG_NOTIFY_POLICY'. Did you mean: 'X509_V_FLAG_EXPLICIT_POLICY'?_
-Run `pip install --upgrade pyopenssl cryptography cffi`
-  
-  
-### _OSError: /home/_username_/.cache/pypoetry/virtualenvs/capev2-t2x27zRb-py3.10/lib/libyara.so: cannot open shared object file: No such file or directory_
-I had to create a soft-link to where the file is actually in the system. 
-1. Find libyara.so within your file system, the path should be `/usr/local/lib/libyara.so`
-2. Copy the filepath
-3. Open a terminal and run, make sure to replace username with your own `ln -s /usr/local/lib/libyara.so /home/_username_/.cache/pypoetry/virtualenvs/capev2-t2x27zRb-py3.10/lib/libyara.so`
-  
-  
-### _AttributeError: module 'sflock.__version__' has no attribute 'split'_
-Error cause by code that checks the version of sflock and whether or not it is up to date. I deleted the code for checking the version and everything worked fine after that. 
-`sudo nano ./lib/cuckoo/common/demux.py` go to line 32 and delete the 2(?) lines of code
-  
-  
-### _YaraSyntaxError: /home/cybersecurity/.cache/pypoetry/virtualenvs/capev2-t2x27zRb-py3.10/lib/python3.10/site-packages/sflock/data/yara/shellcodes.yar:47: misplaced wildcard or skip at string "$peb_parsing", wildcards and skips are only allowed after the first byte of the string_
-
-I encountered this error but I think it was because I had misconfigured something during installation. Still, I wanted to include it here because it was a pain for me to figure out.  
-I never really fixed this error, because when I reverted my server to a previous snapshot, it seemed to resolve itself. Now that my setup works, here is the code that works:  
-
-`$peb_parsing = { (64 a1 30 00 00 00 | 64 8b (1d | 0d | 15 | 35 | 3d) 30 00 00 00 | 31 (c0 | db | c9 | d2 | f6 | ff) [0-8] 64 8b ?? 30 ) [0-8] 8b ?? 0c [0-8] 8b ?? (0c | 14 | 1C) [0-8] 8b ?? (28 | 30) }`
-
-`$peb_parsing64 = { (48 65 A1 60 00 00 00 00 00 00 00 | 65 (48 | 4C) 8B ?? 60 00 00 00 | 65 A1 60 00 00 00 00 00 00 00 | 65 8b ?? ?? 00 FF FF | (48 31 (c0 | db | c9 | d2 | f6 | ff) | 4D 31 (c0 | c9))  [0-16] 65 (48 | 4d | 49 | 4c) 8b ?? 60) [0-16] (48 | 49 | 4C) 8B ?? 18 [0-16] (48 | 49 | 4C) 8B ?? (10 | 20 | 30) [0-16] (48 | 49 | 4C) 8B ?? (50 | 60) }`
-
-I wouldn't try messing with this by editing it. I believe something must be seriously wrong with your setup for it to throw this error. Try uninstalling and reinstalling CAPE.
-
 ## WORK IN PROGRESS

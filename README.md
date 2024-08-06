@@ -127,6 +127,8 @@ We will need a virtual machine build for analyzing malware samples. A Windows 10
 > Windows 10 De-Bloat Scripts. Download the entire zip here are you will need multiple scripts from this repo. [Debloat-Windows-10](https://github.com/W4RH4WK/Debloat-Windows-10)
 > 
 > Windows Defender Remover [Download repo .zip](https://github.com/jbara2002/windows-defender-remover)
+>
+> Windows 10 Decrapifier. Removes a lot of the noise that Windows 10 generates [Windows 10 Decrapifier](https://gist.github.com/rca/0d265148f7f754e642a79713330bf8f9)
 
  3. Once the install is back up and asking for user input, select your region  and language. 
  4. Since we are not connected to the internet right now, as we have no NIC, select Continue with limited setup in the lower left corner.
@@ -200,6 +202,8 @@ We will need a virtual machine build for analyzing malware samples. A Windows 10
  39. Clone this VM if you want to but you'll need to change machine name and IP address.
  40. WHEW! All done.
 
+## Optional Additional Configurations
+If Windows 10 is the VM
 
 
 # Capev2 Sandbox Installation Part 2 - Configuring and Running CAPE

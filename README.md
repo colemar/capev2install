@@ -8,7 +8,6 @@ So, I spent so much time using the official docs for CAPEv2. The Github readme a
 
 The official repositories for CAPEv2 and Doomedraven's Tools are below
 [CAPEv2 Malware Configuration And Payload Extraction](https://github.com/kevoreilly/CAPEv2)
-[@D00m3dr4v3n Tools](https://github.com/doomedraven/Tools)
 
 
 

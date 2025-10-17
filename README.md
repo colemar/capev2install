@@ -95,7 +95,7 @@ In this section we install CAPEv2. The installer will need to be edited a little
  8. Once rebooted, there is one more hurdle. This one took me a while to figure out. It was buried in the issues section of the Github repository. The database doesn't have proper permissions by default, so this will correct that. **colemar**: database `cape` owner was already `cape`.
  9. From the Terminal `sudo -u postgres psql`
  10. `ALTER DATABASE cape OWNER TO cape;`
- 11. `\q` **colemar**: at this point is better to switch to user cape: `sudo su - cape -c /bin/bash`
+ 11. `\q` **colemar**: at this point is better to switch to user cape: `sudo -i -u cape`
  12. `cd /opt/CAPEv2`
  13. `pip3 install -r requirements.txt`
  14. `poetry install`

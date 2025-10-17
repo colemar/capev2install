@@ -92,7 +92,7 @@ In this section we install CAPEv2. The installer will need to be edited a little
  5. `sudo chmod a+x cape2.sh`
  6. `sudo ./cape2.sh all | tee cape.log`
  7. `sudo reboot`
- 8. Once rebooted, there is one more hurdle. This one took me a while to figure out. It was buried in the issues section of the Github repository. The database doesn't have proper permissions by default, so this will correct that.
+ 8. Once rebooted, there is one more hurdle. This one took me a while to figure out. It was buried in the issues section of the Github repository. The database doesn't have proper permissions by default, so this will correct that. **colemar**: database `cape` owner was already `cape`.
  9. From the Terminal `sudo -u postgres psql`
  10. `ALTER DATABASE cape OWNER TO cape;`
  11. `\q` 

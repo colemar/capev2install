@@ -100,7 +100,7 @@ In this section we install CAPEv2. The installer will need to be edited a little
  13. `pip3 install -r requirements.txt` # **colemar**: this is incorrect as stated in https://capev2.readthedocs.io/en/latest/installation/host/installation.html; in my case it failed at `daphne==3.0.2`; go straight to the next step.
  14. `poetry install`
  15. `sudo -u cape poetry run pip install -r extra/optional_dependencies.txt`
- 16.  Run `sudo journalctl -u cape.service`. This will show the log for the CAPE service. My first try showed that some dependencies were missing. Yours may vary, but this is what I had to do next.
+ 16.  Run `sudo journalctl -u cape.service`. This will show the log for the CAPE service. My first try showed that some dependencies were missing. Yours may vary, but this is what I had to do next. # **colemar**: solving dependencies will not suffice to avoid `libvirt: QEMU Driver error : Domain not found: no domain with matching name 'cuckoo1'` and `Error initializing machines`, since there is no virtual machine yet. The following poetry steps are likely not needed if optional_dependencies.txt command above worked.
  17. `poetry run pip3 install https://github.com/CAPESandbox/peepdf/archive/20eda78d7d77fc5b3b652ffc2d8a5b0af796e3dd.zip#egg=peepdf==0.4.2`
  18. `poetry run pip3 install -U git+https://github.com/DissectMalware/batch_deobfuscator`
  19. `poetry run pip3 install -U git+https://github.com/CAPESandbox/httpreplay`

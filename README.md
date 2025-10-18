@@ -105,6 +105,8 @@ In this section we install CAPEv2. The installer will need to be edited a little
  18. `poetry run pip3 install -U git+https://github.com/DissectMalware/batch_deobfuscator`
  19. `poetry run pip3 install -U git+https://github.com/CAPESandbox/httpreplay`
  20. Work through that until you get no errors from journalctl. You might have to restart the service. The other cape services can be found by typing journalctl -u cape and hitting tab a couple of times. This will list out the other services. You'll need to look at these to figure out if anything is wrong. In your routing.conf you'll need the tor line to reflect what interface KVM is attached to, in my case virbr0.
+ 21. **colemar**: set `arch = x64` in /opt/CAPEv2/conf/kvm.conf
+
 ## Build an Analysis VM
 
 We will need a virtual machine build for analyzing malware samples. A Windows 10 VM will work. You can use Windows 7, Windows 10, Windows 11, Windows Server, Linux, etc. Let's start with one. Disabling the services on Windows 10 is a bit of a pain, but I've found some good scripts to automate the process. You'll need a Windows 10 license and I strongly suggest a copy of MS Office (2019 or 2016 is just fine). The new version (365) might be too chatty on the network. Some people suggest 4GB of RAM for the VMs but I use 8GB. Also, never use less than 2 cores or CPUs. No devices in the past 10 years are single core and malware might look for that. Let's start.

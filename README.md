@@ -111,7 +111,7 @@ In this section we install CAPEv2. The installer will need to be edited a little
 
 We will need a virtual machine build for analyzing malware samples. A Windows 10 VM will work. You can use Windows 7, Windows 10, Windows 11, Windows Server, Linux, etc. Let's start with one. Disabling the services on Windows 10 is a bit of a pain, but I've found some good scripts to automate the process. You'll need a Windows 10 license and I strongly suggest a copy of MS Office (2019 or 2016 is just fine). The new version (365) might be too chatty on the network. Some people suggest 4GB of RAM for the VMs but I use 8GB. Also, never use less than 2 cores or CPUs. No devices in the past 10 years are single core and malware might look for that. Let's start.
 
- 1. Create a new KVM via Virt-Manager. Do not be attached to the network while installing and after install. Just remove the network card from the configuration for now. We do not want this VM to take updates.
+ 1. Create a new KVM via Virt-Manager. Do not be attached to the network while installing and after install. Just remove the network card from the configuration for now. We do not want this VM to take updates. # **colemar**: see `https://www.doomedraven.com/2016/05/kvm.html#modifying-kvm-qemu-kvm-settings-for-malware-analysis` for some counter-anti-vm spoofing.
  2. Begin the installation. Choose your language, accept license terms, etc. Custom install, use the entire drive for the install. Installation will proceed on it's own for a bit.
  3. Download some software for the VM onto a USB drive on another machine while we wait. If your VM has internet, use the download links to get the software.
  

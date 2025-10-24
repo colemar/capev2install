@@ -66,10 +66,12 @@ This is where the instructions incorporate my experience. Would like to give a s
  7. `sudo iasl -d dsdt.dat`  (NOTE: my steps are case sensitive)
  8.  The output of that last command produced a line that contained a 4 digit code. ACPI: DSDT 0x0000000000000000 0213AC (v02 HPQOEM **82BF**     00000000 INTL 20121018). I used 82BF to replace all of the `<WOOT>` instances in the kvm-qemu.sh file.
  9. Set the installer to executable `sudo chmod +x kvm-qemu.sh`
- 10. Execute the installer for KVM from the terminal, replace <username> with current active user `sudo ./kvm-qemu.sh all <username> | tee kvm-qemu.log`
- 11. `sudo reboot`
- 12. Install virtmanager GUI, replace <username> with current active user `sudo ./kvm-qemu.sh virtmanager <username> | tee kvm-qemu-virtmanager.log` # **colemar**: if ubuntu-desktop is installed then virtmanager was already installed with the `all` option above.
+ 10. **colemar**: `kvm-quemu.sh -h` for help, `kvm-qemu.sh issues` to see known issues
+ 11. **colemar**: kvm-qemu.sh will execute `systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target` unconditionally.
+ 12. Execute the installer for KVM from the terminal, replace <username> with current active user `sudo ./kvm-qemu.sh all <username> | tee kvm-qemu.log` # **colemar**: As of commit 76b801b9c (2023-03-14), kvm-qemu.sh will use $SUDO_USER regardless of the optional <username> argument.
  13. `sudo reboot`
+ 14. Install virtmanager GUI, replace <username> with current active user `sudo ./kvm-qemu.sh virtmanager <username> | tee kvm-qemu-virtmanager.log` # **colemar**: if ubuntu-desktop is installed then virtmanager was already installed with the `all` option above.
+ 15. `sudo reboot`
 
 ## Install CAPEv2 Sandbox
 

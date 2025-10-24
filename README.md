@@ -68,7 +68,7 @@ This is where the instructions incorporate my experience. Would like to give a s
  9. Set the installer to executable `sudo chmod +x kvm-qemu.sh`
  10. Execute the installer for KVM from the terminal, replace <username> with current active user `sudo ./kvm-qemu.sh all <username> | tee kvm-qemu.log`
  11. `sudo reboot`
- 12. Install virtmanager GUI, replace <username> with current active user `sudo ./kvm-qemu.sh virtmanager <username> | tee kvm-qemu-virtmanager.log` 
+ 12. Install virtmanager GUI, replace <username> with current active user `sudo ./kvm-qemu.sh virtmanager <username> | tee kvm-qemu-virtmanager.log` # **colemar**: if ubuntu-desktop is installed then virtmanager was already installed with the `all` option above.
  13. `sudo reboot`
 
 ## Install CAPEv2 Sandbox

@@ -73,8 +73,6 @@ This is where the instructions incorporate my experience. Would like to give a s
 
 ## Install CAPEv2 Sandbox
 
-**colemar**: `git clone https://github.com/kevoreilly/CAPEv2.git` instead of wget-ting. You will find all needed files in `CAPEv2/installer`
-
 In this section we install CAPEv2. The installer will need to be edited a little. Additionally, I had some problems with tor, so I disabled that in the config. Obviously, you'd probably want this functionality. Let's get it running and then we can enable extra features one at a time so troubleshooting is easier if there are any problems.
 
  1. Open the Terminal and let's get going. Go to your home directory `cd ~`

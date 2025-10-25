@@ -68,9 +68,9 @@ This is where the instructions incorporate my experience. Would like to give a s
  9. Set the installer to executable `sudo chmod +x kvm-qemu.sh`
  10. **colemar**: `./kvm-quemu.sh -h` for help, `./kvm-qemu.sh issues` to see known issues
  11. **colemar**: kvm-qemu.sh will execute `systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target` unconditionally.
- 12. Execute the installer for KVM from the terminal, replace <username> with current active user `sudo ./kvm-qemu.sh all <username> | tee kvm-qemu.log` # **colemar**: As of commit 76b801b9c (2023-03-14), kvm-qemu.sh will use $SUDO_USER regardless of the optional <username> argument, which means it will always use the current active user.
+ 12. Execute the installer for KVM from the terminal, replace <username> with current active user `sudo ./kvm-qemu.sh all <username> | tee kvm-qemu.log` # **colemar**: As of commit 76b801b9c (2023-03-14), kvm-qemu.sh will use $SUDO_USER regardless of the optional <username> argument, which means it will always use the current active user, therefore `sudo ./kvm-qemu.sh all | tee kvm-qemu.log` is fine.
  13. `sudo reboot`
- 14. Install virtmanager GUI, replace <username> with current active user `sudo ./kvm-qemu.sh virtmanager <username> | tee kvm-qemu-virtmanager.log` # **colemar**: if ubuntu-desktop, ubuntu-desktop-minimal or any package ubuntu-desktop* is installed then virtmanager was already installed with the `all` option above.
+ 14. Install virtmanager GUI, replace <username> with current active user `sudo ./kvm-qemu.sh virtmanager <username> | tee kvm-qemu-virtmanager.log` # **colemar**: if `ubuntu-desktop`, `ubuntu-desktop-minimal` or any package `ubuntu-desktop*` is installed, then virtmanager was already installed with the `all` option above.
  15. `sudo reboot`
 
 ## Install CAPEv2 Sandbox

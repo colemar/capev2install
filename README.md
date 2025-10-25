@@ -79,34 +79,33 @@ In this section we install CAPEv2. The installer will need to be edited a little
 
  1. Open the Terminal and let's get going. Go to your home directory `cd ~`
  2. `wget https://raw.githubusercontent.com/kevoreilly/CAPEv2/master/installer/cape2.sh`
- 3.  Edit cape2.sh with your favorite editor 
- 4.  Here are some of the parameters. Verify these.
-
-> NETWORK_IFACE=virbr0 
-> IFACE_IP="192.168.122.1"
-> PASSWD="<pswd>" Replace <pswd> with your own password
-> USER=cape
+ 3.  Edit cape2.sh with your favorite editor
+ 5.  Here are some of the parameters. Verify these.
+	> NETWORK_IFACE=virbr0 
+	> IFACE_IP="192.168.122.1"
+	> PASSWD="<pswd>" Replace <pswd> with your own password
+	> USER=cape
  5. `sudo chmod a+x cape2.sh`
- 6. `sudo ./cape2.sh all | tee cape.log`
- 7. `sudo reboot`
- **colemar**: even with `NETWORK_IFACE=virbr0` as above, after executing cape2.sh 10 files in /opt/CAPEv2 still report `virbr1`. Proof: `grep -r -l virbr1 /opt/CAPEv2/`. CORRECTION: `sudo sed -i 's/virbr1/virbr0/g' $(grep -r -l virbr0 /opt/CAPEv2/)`.
-> 
- `journalctl -u cape` 'CRITICAL: CuckooCriticalError: Unable to bind ResultServer on 192.168.1.1:2042' ==> change `ip` item to `192.168.122.1` in section `[resultserver]` of file `/opt/CAPEv2/conf/cuckoo.conf`
- `cd /opt/CAPEv2/conf` `grep -r '192\.168\.1\.'` ==> change ´192.168.1.´ to ´192.168.122.´
- 8. Once rebooted, there is one more hurdle. This one took me a while to figure out. It was buried in the issues section of the Github repository. The database doesn't have proper permissions by default, so this will correct that. **colemar**: database `cape` owner was already `cape`.
- 9. From the Terminal `sudo -u postgres psql`
- 10. `ALTER DATABASE cape OWNER TO cape;`
- 11. `\q` # **colemar**: at this point is **really** better to switch to user cape for the next steps: `sudo -i -u cape`
- 12. `cd /opt/CAPEv2`
- 13. `pip3 install -r requirements.txt` # **colemar**: this is incorrect as stated in https://capev2.readthedocs.io/en/latest/installation/host/installation.html; in my case it failed at `daphne==3.0.2`; go straight to the next step.
- 14. `poetry install`
- 15. `sudo -u cape poetry run pip install -r extra/optional_dependencies.txt`
- 16.  Run `sudo journalctl -u cape.service`. This will show the log for the CAPE service. My first try showed that some dependencies were missing. Yours may vary, but this is what I had to do next. # **colemar**: solving dependencies will not suffice to avoid `libvirt: QEMU Driver error : Domain not found: no domain with matching name 'cuckoo1'` and `Error initializing machines`, since there is no virtual machine yet. The following poetry steps are likely not needed if optional_dependencies.txt command above worked.
- 17. `poetry run pip3 install https://github.com/CAPESandbox/peepdf/archive/20eda78d7d77fc5b3b652ffc2d8a5b0af796e3dd.zip#egg=peepdf==0.4.2`
- 18. `poetry run pip3 install -U git+https://github.com/DissectMalware/batch_deobfuscator`
- 19. `poetry run pip3 install -U git+https://github.com/CAPESandbox/httpreplay`
- 20. Work through that until you get no errors from journalctl. You might have to restart the service. The other cape services can be found by typing journalctl -u cape and hitting tab a couple of times. This will list out the other services. You'll need to look at these to figure out if anything is wrong. In your routing.conf you'll need the tor line to reflect what interface KVM is attached to, in my case virbr0.
- 21. **colemar**: set `arch = x64` in /opt/CAPEv2/conf/kvm.conf
+ 7. `sudo ./cape2.sh all | tee cape.log`
+ 8. `sudo reboot`
+ 9. **colemar**: `journalctl -u cape` 'CRITICAL: CuckooCriticalError: Unable to bind ResultServer on 192.168.1.1:2042' ==> change `ip` item to `192.168.122.1` in section `[resultserver]` of file `/opt/CAPEv2/conf/cuckoo.conf`
+ 10. **colemar**: `cd /opt/CAPEv2/conf;grep -r '192\.168\.1\.'` ==> change ´192.168.1.´ to ´192.168.122.´ by executing `sudo sed -i 's/192\.168\.1\./192.168.122./' $(grep -rl '192\.168\.1\.')`
+ 11. **colemar**: `cd /opt/CAPEv2/conf;grep -r 'virbr1'` ==> change 'virbr1' to 'virbro' by executing `sudo sed -i 's/virbr1/virbr0/' $(grep -rl 'virbr1')`.
+ 12. Once rebooted, there is one more hurdle. This one took me a while to figure out. It was buried in the issues section of the Github repository. The database doesn't have proper permissions by default, so this will correct that. **colemar**: database `cape` owner was already `cape`.
+ 13. From the Terminal `sudo -u postgres psql`
+ 14. `ALTER DATABASE cape OWNER TO cape;`
+ 15. `\q`
+ 16. **colemar**: at this point is **really** better to switch to user cape for the next steps: `sudo -i -u cape`
+ 17. `cd /opt/CAPEv2`
+ 19. `pip3 install -r requirements.txt` # **colemar**: this is incorrect as stated in https://capev2.readthedocs.io/en/latest/installation/host/installation.html; in my case it failed at `daphne==3.0.2`; go straight to the next step.
+ 20. `poetry install` # **colemar**: already done by line 1262 in `cape2.sh`
+ 21. `sudo -u cape poetry run pip install -r extra/optional_dependencies.txt`
+ 22.  Run `sudo journalctl -u cape.service`. This will show the log for the CAPE service. My first try showed that some dependencies were missing. Yours may vary, but this is what I had to do next. # **colemar**: solving dependencies will not suffice to avoid `libvirt: QEMU Driver error : Domain not found: no domain with matching name 'cuckoo1'` and `Error initializing machines`, since there is no virtual machine yet. The following poetry steps are likely not needed if optional_dependencies.txt command above worked.
+ 23. `poetry run pip3 install https://github.com/CAPESandbox/peepdf/archive/20eda78d7d77fc5b3b652ffc2d8a5b0af796e3dd.zip#egg=peepdf==0.4.2`
+ 24. `poetry run pip3 install -U git+https://github.com/DissectMalware/batch_deobfuscator`
+ 25. `poetry run pip3 install -U git+https://github.com/CAPESandbox/httpreplay`
+ 26. Work through that until you get no errors from journalctl. You might have to restart the service. The other cape services can be found by typing journalctl -u cape and hitting tab a couple of times. This will list out the other services. You'll need to look at these to figure out if anything is wrong. In your routing.conf you'll need the tor line to reflect what interface KVM is attached to, in my case virbr0.
+ 27. **colemar**: set `arch = x64` in /opt/CAPEv2/conf/kvm.conf
 
 ## Build an Analysis VM
 

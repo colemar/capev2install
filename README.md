@@ -88,7 +88,10 @@ In this section we install CAPEv2. The installer will need to be edited a little
 > USER=cape
  5. `sudo chmod a+x cape2.sh`
  6. `sudo ./cape2.sh all | tee cape.log`
- 7. `sudo reboot` # **colemar**: even with `NETWORK_IFACE=virbr0` as above, after executing cape2.sh 10 files in /opt/CAPEv2 still report `virbr1`. Proof: `grep -r -l virbr1 /opt/CAPEv2/`. CORRECTION: `sudo sed -i 's/virbr1/virbr0/g' $(grep -r -l virbr0 /opt/CAPEv2/)`.
+ 7. `sudo reboot`
+ **colemar**: even with `NETWORK_IFACE=virbr0` as above, after executing cape2.sh 10 files in /opt/CAPEv2 still report `virbr1`. Proof: `grep -r -l virbr1 /opt/CAPEv2/`. CORRECTION: `sudo sed -i 's/virbr1/virbr0/g' $(grep -r -l virbr0 /opt/CAPEv2/)`.
+ `journalctl -u cape` 'CRITICAL: CuckooCriticalError: Unable to bind ResultServer on 192.168.1.1:2042' ==> change `ip` item to `192.168.122.1` in section `[resultserver]` of file `/opt/CAPEv2/conf/cuckoo.conf`
+ `cd /opt/CAPEv2/conf` `grep -r '192\.168\.1\.'` ==> change ´192.168.1.´ to ´192.168.122.´
  8. Once rebooted, there is one more hurdle. This one took me a while to figure out. It was buried in the issues section of the Github repository. The database doesn't have proper permissions by default, so this will correct that. **colemar**: database `cape` owner was already `cape`.
  9. From the Terminal `sudo -u postgres psql`
  10. `ALTER DATABASE cape OWNER TO cape;`
